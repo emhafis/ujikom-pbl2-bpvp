@@ -1,0 +1,26 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Siswas {
+  id Int @id @default(autoincrement())
+  kode_siswa String @unique
+  nama_siswa String
+  alamat String
+  tanggal_lahir DateTime @db.Date
+  jurusan String
+}
+
+// {
+//     "kode_siswa": "S-001",
+//     "nama_siswa": "Budi Santoso",
+//     "alamat": "Jl. Pendidikan No. 15, Jakarta",
+//     "tanggal_lahir": "2005-10-25",
+//     "jurusan": "IPA"
+// }
