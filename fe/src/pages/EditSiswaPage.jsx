@@ -14,10 +14,34 @@ export default function EditSiswaPage() {
     jurusan: "",
   });
 
+  // useEffect(() => {
+  //   axios
+  //     .get(`http://localhost:8000/siswa/${id}`)
+  //     .then((res) => setFormData(res.data))
+  //     .catch((err) => console.error(err));
+  // }, [id]);
+
   useEffect(() => {
     axios
       .get(`http://localhost:8000/siswa/${id}`)
-      .then((res) => setFormData(res.data))
+      .then((res) => {
+        const siswaData = res.data;
+        let formattedDate = siswaData.tanggal_lahir;
+
+        //API mengembalikan format ISO (misal: "2000-01-01T00:00:00.000Z")
+        if (
+          formattedDate &&
+          typeof formattedDate === "string" &&
+          formattedDate.includes("T")
+        ) {
+          formattedDate = formattedDate.substring(0, 10);
+        }
+
+        setFormData({
+          ...siswaData,
+          tanggal_lahir: formattedDate || "",
+        });
+      })
       .catch((err) => console.error(err));
   }, [id]);
 
@@ -96,6 +120,7 @@ export default function EditSiswaPage() {
               id="tanggal_lahir"
               type="date"
               name="tanggal_lahir"
+              // value={new Date(formData.tanggal_lahir.toLocaleString("id-ID"))}
               value={formData.tanggal_lahir}
               onChange={handleChange}
               className="mt-1 p-2 border border-gray-300 rounded w-full focus:ring-indigo-500 focus:border-indigo-500"
